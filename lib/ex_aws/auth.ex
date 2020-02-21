@@ -134,7 +134,7 @@ defmodule ExAws.Auth do
 
   defp handle_temp_credentials(headers, _), do: headers
 
-  defp auth_header(http_method, url, headers, body, service, datetime, config) do
+  def auth_header(http_method, url, headers, body, service, datetime, config) do
     uri = URI.parse(url)
     query =
       if uri.query,
