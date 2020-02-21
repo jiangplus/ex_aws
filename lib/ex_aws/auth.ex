@@ -1,5 +1,6 @@
 defmodule ExAws.Auth do
   import ExAws.Auth.Utils
+  require Logger
 
   alias ExAws.Auth.Credentials
   alias ExAws.Auth.Signatures
@@ -52,6 +53,21 @@ defmodule ExAws.Auth do
           datetime,
           config
         )
+
+      if config[:debug_requests] do
+        Logger.debug(
+          "ExAws: auth_header:\n #{inspect(%{
+            http_method: http_method,
+            url: url,
+            headers: headers,
+            body: body,
+            service: service |> service_override(config) |> service_name,
+            datetime: datetime,
+            config: config,
+            auth: [{"Authorization", auth_header} | headers]
+          })}"
+        )
+      end
 
       {:ok, [{"Authorization", auth_header} | headers]}
     end
